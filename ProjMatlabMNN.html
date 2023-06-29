@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Projects - Autonomous Dynamometer</title>
+    <style>
+      /* Add styles for centering text and images */
+      body {
+        background-color: rgb(255, 255, 255);
+        text-align: justify;
+        color: rgb(0, 0, 0);
+      }
+      img {
+        display: block;
+        margin: 0 auto;
+        max-width: 100%;
+        border: 5px solid #555;
+      }
+      .image {
+        display: block;
+        margin: 0 auto;
+        max-width: 100%;
+        border: 0px solid #555;
+      }
+      /* Add styles for the menu */
+      #menu {
+        position: fixed;
+        top: 0%;
+        left: 0;
+        transform: translateY(0%);
+        background-color: black;
+        color: rgb(255, 255, 255);
+        padding: 20px;
+        text-align: left;
+        z-index: 1;
+      }
+      #menu a {
+        display: block;
+        color: rgb(255, 255, 255);
+        text-decoration: none;
+        margin-bottom: 10px;
+      }
+      #menu a:hover {
+        text-decoration: underline;
+      }
+      /* Add styles for the posts */
+      .post {
+        margin: 50px auto;
+        max-width: 1000px;
+      }
+      .post h2 {
+        font-size: 32px;
+        margin-bottom: 20px;
+      }
+      .post p {
+        font-size: 18px;
+        line-height: 1.5;
+        margin-bottom: 20px;
+      }
+    </style>
+    <style>
+      h2 {
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="menu">
+      <a href="#post1">Introduction</a>
+      <a href="#post2">System Breakdown</a>
+      <ul>
+        <a href="#MechSystems">Mechanical Systems</a>
+        <a href="#MeasSystems">Measurement Systems</a>
+        <a href="#ContSystems">Control Systems</a>
+      </ul>
+      <a href="#post3">Implementation</a>
+      <ul>
+        <a href="#post3">Wiring Diagram</a>
+        <a href="#Tach">Tachometer</a>
+        <a href="#Torque">Torque Sensor</a>
+        <a href="#Voltmeter">Voltmeter</a>
+        <a href="#Ammeter">Ammeter</a>
+        <a href="#CSystem">Control Systems</a>
+      </ul>
+      <a href="#post4">Conclusion</a>
+    </div>
+    <div class="post" id="post1">
+      <u><h2>Autonomous Dynamometer for Lab Testing Environment</h2></u>
+      <img src="test.png" />
+      The goal of this project was to design an autonomous dynamometer for a lab
+      testing environment. The purpose of this design was to significantly
+      reduce the manual labour and lead time required to generate a torque-speed
+      curve.
+      <style>
+        * {
+          box-sizing: border-box;
+        }
+
+        .img-container {
+          float: left;
+          width: 50%;
+          padding: 5px;
+        }
+
+        .clearfix::after {
+          content: "";
+          clear: both;
+          display: table;
+        }
+      </style>
+
+      <div class="clearfix">
+        <div class="img-container">
+          <img src="tsCurve.png" height="200" />
+        </div>
+        <div class="img-container">
+          <img src="DCCurve.jpg" height="200" />
+        </div>
+      </div>
+      To identify potential solutions and define the functional requirements, it
+      was necessary to conduct an extensive literature review alongside a system
+      breakdown. The following section details the findings of this prelimanary
+      R&D phase.
+      <div class="post" id="post2"></div>
+      <h2><u>System Breakdown</u></h2>
+      As can be seen in the figure below, a system breakdown yielded three
+      subsystems of interest. Note that dashed lines represent a data transfer
+      while solid lines represent an energy transfer.
+      <img src="NewSysB.jpg" height="400" />
+      <div id="MechSystems"></div>
+      <font size="+2"><u>Mechanical Systems</u></font
+      ><br />
+      At it's core, the mechanical system is centered around the use of a prony
+      brake; a pre-existing design used for relating speed & torque on a given
+      motor. As the wooden blocks are tightened against the flywheel, it slows
+      down and induces a reactionary torque upon the moment arm.
+      <img src="prony.jpeg" width="795" id="testest" />
+      Stepper motors were used to tighten the wooden blocks against the
+      flywheel. To convert the rotation of a given stepper motor into a linear
+      motion of the brake pads, the two motors were equipped with lead screws
+      and threaded bolts.
+      <img src="leadScrew.gif" />
+      <br /><br />
+      <div id="MeasSystems"></div>
+      <font size="+2"><u>Measurement systems</u></font
+      ><br />
+      For the purposes of this design, the following measurements were of
+      interest: <br />
+      <font size="-1">
+        (1) Motor Output: RPM <br />
+        (2) Motor Output: Torque <br />
+        (3) Motor Input: Voltage <br />
+        (4) Motor Input: Current <br /> </font
+      ><br />
+      Note that the inclusion of parameters (3) and (4) will allow operators to
+      make efficiency measurements.<br />
+      <font size="-1">
+        Input Power = Voltage * Current <br />
+        Output Power = Torque * Speed <br />
+        %Efficiency = (Output Power/Input Power) <br />
+      </font>
+      <br /><br />
+      <u><b>[1]Motor Output: Speed/RPM</b></u
+      ><br />
+      The most practical way to measure shaft speed was to use a
+      <a href="https://en.wikipedia.org/wiki/Hall_effect_sensor" target="_blank"
+        >hall effect sensor</a
+      >. It operates on the principle that as a magnet approaches the sensor,
+      it's output voltage will rise. By attaching a magnet to the flywheel and
+      polling the sensor for a positive rise, the hall effect sensor has
+      effectively become a Tachometer.
+      <img src="Hall_sensor_tach.gif" />
+      <small
+        ><u>Note:</u> For the following implementation to work, the polling
+        rates of both the sensor and microcontroller must greater than twice the
+        motors maximum frequency. See
+        <a
+          href="https://en.wikipedia.org/wiki/Nyquist%E2%80%93Shannon_sampling_theorem"
+          target="_blank"
+          >Nyquist–Shannon Sampling Theorem</a
+        >
+        for more information.</small
+      >
+      <br /><br />
+      <u>[2]Motor Output: Torque</u><br />
+      To measure the motor's output torque, a
+      <a href="https://en.wikipedia.org/wiki/Load_cell" target="_blank"
+        >load cell</a
+      >
+      was placaced underneath the prony brake's moment arm. Load cells provide
+      measurements of point force <i>"F"</i> in terms of an output voltage
+      <i>"V<sub>out</sub>"</i>.<br />
+      <a href="#testest" target="_blank">As shown in this image</a>, by
+      attaching the load cell to the end of the moment arm, measurements of the
+      aforementioned point force <i>"F"</i> can be converted to torque
+      <i>"T"</i> via multiplication of arm length <i>"L"</i>. The load cell used
+      for this application would be an FSR402 paired with a resistor of 3,000
+      ohms. <br />
+      As is the case for all load cells, it was necessary to perform a static
+      calibration process.
+      <img src="FSR.png" />
+      <br /><br />
+      <u>[3]Motor Input: Voltage</u><br />
+      To measure voltage across the motor is a relatively simply task, however
+      many motors operate at a voltages that exceed the operational range of an
+      Arduino's Analog-Digital-Converter (5V). For this reason, a
+      <a href="https://en.wikipedia.org/wiki/Voltage_divider" target="_blank"
+        >voltage dividing circuit</a
+      >
+      was constructed in parallel to the motor.
+      <img src="volDiv.jpeg" />
+      Using two analog inputs, a microcontroller could measure the difference
+      between the two nodes of R<sub>2</sub>, and calculate the voltage across
+      the motor.
+      <br /><br />
+      <u>[4]Motor Input: Current</u><br />
+      To measure the current being drawn by the motor, a DIY ammeter was
+      constructed.<br />
+      In a process similar to that of the voltmeter, the DAC would sample
+      voltage readings across a known resistor and calculate the difference
+      between them. Once the potential difference is known,
+      <a href="https://en.wikipedia.org/wiki/Ohm%27s_law" target="_blank"
+        >Ohm’s Law</a
+      >
+      would be applied to solve for current.
+      <img src="ohms.png" height="200" /><br />
+      <br /><br />
+      <div id="ContSystems"></div>
+      <font size="+2"><u>Control Systems</u></font
+      ><br />
+      After careful consideration of the problem statement and system
+      requirements, it was determined that a closed-loop control system would
+      not be necessary if the systems braking torque were applied by a stepper
+      motor. This is due to a unique characteristic of stepper motors in that
+      the motor's position can be commanded to move and hold at discrete
+      intervals without any position sensor for feedback (an open-loop
+      controller). The following open-loop control systems would be implemented.
+      <ul>
+        <li>Manually Increment Stepper Motors</li>
+        <li>Manually Decrement Stepper Motors</li>
+        <li>Initiate Autonomous Motor Test from Stall Torque(0 RPM)</li>
+        <li>Initiate Autonomous Motor Test from No-Load Speed (0 Torque)</li>
+        <li>On/Off</li>
+      </ul>
+      The user interface for triggering these commands will take the form of
+      simple buttons, handled by an arduino.
+      <div class="post" id="post3"></div>
+      <h2><u>Implementation</u></h2>
+      The circuit diagram shown below displays the wiring configuration of the
+      final cicruit. It will be referred to numerous times in the following
+      section. Black cables lead to circuit ground (0V) while red cables carry
+      voltage from a source.<img src="codeSetup.png" class="image" />
+      <img src="circuitDiagram.png" />
+      <img src="codeMainLoop.png" class="image" />
+
+      <br /><br />
+      <div id="Tach"></div>
+      <u>[1]Motor Output: Speed/RPM</u><br />
+      The tachometer makes use of a 3-pin Hall Effect Sensor. The positive and
+      negative nodes are connected to 5V Power and 0V ground respectively. The
+      the output pin is wired directly to the Arduino's digital input buss via
+      pin 2 (orange wire).
+      <img src="codeHall.png" />
+      Upon calling the <i>"Tachometer()"</i> function, the Arduino will be
+      handled by an
+      <a href="https://en.wikipedia.org/wiki/Interrupt_handler" target="_blank"
+        >interrupt</a
+      >
+      named <i>"Counter()”</i>, triggered by a
+      <a href="https://en.wikipedia.org/wiki/Signal_edge" target="_blank"
+        >rising edge</a
+      >
+      from the Hall Effect Sensor. The purpose of this interrupt is to count
+      rotations of the flywheel over a given time interval, effectively
+      measuring the RPM of the testing motor. The amount of rotations used to
+      calculate RPM is a tweakable tuning parameter <i>hallThreshold</i>.
+      <br /><br />
+      <div id="Torque"></div>
+      <u>[2]Motor Output: Torque</u><br />
+      Torque measurements are gathered via analog input pin 0 (blue wire),
+      between the negative node of the
+      <a
+        href="https://en.wikipedia.org/wiki/Force-sensing_resistor"
+        target="_blank"
+        >FSR</a
+      >
+      and the postivie node of the 3,000 ohm resistor. For a sensor of this
+      type, it was necessary to perform a static calibration process such that
+      the measured voltage could be converted into a meaninful and accurate
+      measurement of force. The calibrated system was modelled as a
+      <a
+        href="https://en.wikipedia.org/wiki/Piecewise_linear_function"
+        target="_blank"
+        >Piecewise linear function</a
+      >.
+      <img src="codeFSR.png" height="450" />
+      <small
+        ><u>Note:</u> The built-in
+        <a
+          href="https://en.wikipedia.org/wiki/Analog-to-digital_converter"
+          target="_blank"
+          >ADC</a
+        >
+        has a sampling resolution of 10 bits. This means that there are 2<sup
+          >10</sup
+        >
+        (1024) possible input values corresponding to the range between 0 and 5
+        volts. This integer input is manually converted into
+        <i>"FSRVoltage"</i>, a floating point value between of 0 and 5.</small
+      >
+      <br /><br />
+      <div id="Voltmeter"></div>
+      <u>[3]Motor Input: Voltage</u><br />
+      Using two analog inputs (pins 3 and 4, green wires), the voltmeter
+      implemented makes use of simple ohm’s law to quickly return the voltage
+      across a given testing motor. Should future testing requirements call for
+      alternative scaling of voltage division, the values of the two resistors
+      have been provided as tweakable tuning parameters <i>vResistor1</i> and
+      <i>vResistor2</i>.
+      <img src="codeVolt.png" />
+      <small
+        ><u>Note:</u> As mentioned above, the Aanalog-Digital-Coversion has a
+        resolution of 2<sup>10</sup> (0&rarr;1023), and must be converted to a
+        floating point between 0 and 5 volts.</small
+      >
+      <br /><br />
+      <div id="Ammeter"></div>
+      <u>[4]Motor Input: Current</u><br />
+      In a process similar to that of the voltmeter, the DAC samples voltage
+      readings across a known resistor and calculate the difference between
+      them. Once the potential difference is known, Ohm’s law is applied to
+      solve for current.
+      <img src="codeAmm.png" />
+      Should future designs and testing requirements call for a more or less
+      sensitive ammeter, the value of the resistor has been provided as a
+      tweakable tuning parameter.
+      <br /><br />
+      <div id="CSystem"></div>
+      <u>Control System</u><br />
+      As mentioned above, the use of stepper motors offers the lucrative
+      opportunity to simplify & cheapen this design through the implementation
+      of an<br />
+      <a href="https://en.wikipedia.org/wiki/Open-loop_controller">open-loop</a>
+      control system as opposed to one that is
+      <a href="https://en.wikipedia.org/wiki/Closed-loop_controller">closed</a
+      >.<br />
+      This figure below shows the highest branch in the program code, the main
+      loop. This loop serves only to scan for user input. From here, the system
+      may be primed into one of two possible testing conditions. By adjusting
+      the clamping force applied to the motor, testing may be initiated from
+      either stall torque or no torque.
+      <img src="MainLoopDiagram.png" />
+      <small
+        ><u>Note:</u> The inclusion of a new interrupt routine
+        <b>ISRTestFlag</b>, implemented as a safety mechanism to rapidly abort a
+        motor test should anything go wrong. </small
+      ><br />
+      <img src="chartNL.png" class="image" />
+      <small
+        >=====================================================================================================================================</small
+      >
+      <img src="chartStall.png" class="image" />
+      <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+      <div id="post4"></div>
+      <h2><u>Conclusion</u></h2>
+      The purpose of the design is to automate an existing Dynamometer setup by
+      integrating an Arduino microcontroller and electronic sensors. The design
+      successfully meets its objective by automating the measurement process in
+      determining the real torque output of a motor. This results in reduced
+      manual input and significantly reduces the experimentation time. Moreover,
+      further analysis is possible as internal losses can be identified by
+      comparing the rated torque of the motor by the brake torque evaluated
+      experimentally. Literature review provides a foundation from a physics
+      fundamentals standpoint and by identifying current technology that can be
+      implemented for automation purposes. The range of motors that the design
+      can test is constrained by multiple parameters such as the stall torque,
+      input voltage, input current, max RPM and by the size of the motor. This
+      approach narrowed the scope of the project in order to feasibly design a
+      functional solution. A possible progressive step would be to innovate the
+      design to cater to a larger range of motors to further increase the
+      flexibility of the system. Systems analysis provides the integration
+      required to control all the sensor inputs and actuation such that the
+      design can function autonomously after initial setup. Furthermore, sensor
+      integration greatly reduces the experimental error that is present during
+      manual operation. Stress analysis using ANSYS software revealed the yield
+      strength of the material selection is adequate to withstand all internal
+      stresses induced by the motor during operation. There is potential to
+      increase the accuracy of the force sensor through multiple methods.
+      Installing a flat plate directly above the force sensor to come in contact
+      with the moment arm would create an even force distribution on the sensor.
+      The sensor could also be preloaded with its optimal linear range according
+      to the FSR402 datasheet. This would result in more accurate readings.
+      Additionally, the data collection process could also be improved with the
+      use of a rotational potentiometer. This would allow for on-the-fly voltage
+      and current adjustments of the testing motor. The current solution
+      requires the need of an appropriate adapter to connect the rotary shaft to
+      the motor shaft. Requiring the user to manually swap adapters depending on
+      the shaft diameter of the motor wishing to be tested. This could be
+      improved with a coupling system that is able to accept motor shafts of
+      differing diameters, eliminating the need for multiple adapters.
+    </div>
+  </body>
+</html>

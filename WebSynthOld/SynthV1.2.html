@@ -1,0 +1,115 @@
+<html>
+  <center>
+    <br />
+    WebSynth V1.2. (May 9th, 2023) Massive overhaul of backend for purposes of
+    scalability and upcoming features in future updates
+
+    <br />
+  </center>
+  <br />
+  <center>
+    <button id="start">Start</button>
+    <button id="stop">Stop</button>
+    <br />
+    <span>Master Volume</span>
+    <input
+      type="range"
+      id="volume-control"
+      min="0"
+      max="1"
+      step="0.05"
+      value="0.1"
+    /><br />
+    <br />
+    <br />
+    <br />
+    <header><b>Oscillator1</b></header>
+    <span>Volume 1</span>
+    <input
+      type="range"
+      id="volume-control1"
+      min="0"
+      max="1"
+      step="0.05"
+      value="0.1"
+    /><br />
+    <span>Detune1</span>
+    <input
+      type="range"
+      id="detune-control1"
+      min="-100"
+      max="100"
+      step="1"
+      value="0"
+    /><br />
+    <input type="radio" id="sin-wave" name="waveform1" value="sine" checked />
+    <label for="sin-wave">Sin Wave</label><br />
+    <input type="radio" id="square-wave" name="waveform1" value="square" />
+    <label for="square-wave">Square Wave</label><br />
+    <input type="radio" id="triangle-wave" name="waveform1" value="triangle" />
+    <label for="triangle-wave">Triangle Wave</label><br />
+    <input type="radio" id="sawtooth-wave" name="waveform1" value="sawtooth" />
+    <label for="sawtooth">Sawtooth Wave</label>
+    <br />
+    <br />
+    <br />
+    <header><b>Oscillator2</b></header>
+    <span>Volume 2</span>
+    <input
+      type="range"
+      id="volume-control2"
+      min="0"
+      max="1"
+      step="0.05"
+      value="0.1"
+    /><br />
+    <span>Detune2</span>
+    <input
+      type="range"
+      id="detune-control2"
+      min="-100"
+      max="100"
+      step="1"
+      value="0"
+    /><br />
+    <input type="radio" id="sin-wave" name="waveform2" value="sine" checked />
+    <label for="sin-wave">Sin Wave</label><br />
+    <input type="radio" id="square-wave" name="waveform2" value="square" />
+    <label for="square-wave">Square Wave</label><br />
+    <input type="radio" id="triangle-wave" name="waveform2" value="triangle" />
+    <label for="triangle-wave">Triangle Wave</label><br />
+    <input type="radio" id="sawtooth-wave" name="waveform2" value="sawtooth" />
+    <label for="sawtooth">Sawtooth Wave</label>
+    <br />
+    <br />
+    <br />
+    <header><b>Oscillator3</b></header>
+    <span>Volume 3</span>
+    <input
+      type="range"
+      id="volume-control3"
+      min="0"
+      max="1"
+      step="0.05"
+      value="0.1"
+    /><br />
+    <span>Detune1</span>
+    <input
+      type="range"
+      id="detune-control3"
+      min="-100"
+      max="100"
+      step="1"
+      value="0"
+    /><br />
+    <input type="radio" id="sin-wave" name="waveform3" value="sine" checked />
+    <label for="sin-wave">Sin Wave</label><br />
+    <input type="radio" id="square-wave" name="waveform3" value="square" />
+    <label for="square-wave">Square Wave</label><br />
+    <input type="radio" id="triangle-wave" name="waveform3" value="triangle" />
+    <label for="triangle-wave">Triangle Wave</label><br />
+    <input type="radio" id="sawtooth-wave" name="waveform3" value="sawtooth" />
+    <label for="sawtooth">Sawtooth Wave</label>
+  </center>
+  <script src="SynthV1.1.js"></script>
+</html>
